@@ -4,12 +4,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cole's Web Portal</title>
+<title>Cole's Proxy</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
@@ -26,36 +24,44 @@ header {
 }
 
 main {
-  max-width: 1000px;
-  margin: 55px auto;
+  max-width: 1100px;
+  margin: 45px auto;
   padding: 20px;
 }
 
 h1 {
-  font-size: 36px;
   text-align: center;
+  font-size: 34px;
 }
 
-.subtitle {
+p {
   color: #9299aa;
   text-align: center;
 }
 
-.search-box {
+.browser {
+  margin-top: 30px;
+  padding: 15px;
+  background: #151927;
+  border: 1px solid #292f42;
+  border-radius: 14px;
+}
+
+.address {
   display: flex;
   gap: 10px;
-  margin: 35px 0 20px;
+  margin-bottom: 14px;
 }
 
 input {
   flex: 1;
   min-width: 0;
-  padding: 15px;
-  background: #151927;
+  padding: 14px;
+  background: #090b12;
   border: 1px solid #30384d;
-  border-radius: 9px;
+  border-radius: 8px;
   color: white;
-  font-size: 16px;
+  font-size: 15px;
   outline: none;
 }
 
@@ -67,173 +73,93 @@ button {
   padding: 0 25px;
   background: #536dfe;
   border: none;
-  border-radius: 9px;
+  border-radius: 8px;
   color: white;
   cursor: pointer;
-  font-size: 15px;
 }
 
 button:hover {
   background: #4059e8;
 }
 
-button:disabled {
-  opacity: 0.5;
-  cursor: wait;
-}
-
-#status {
-  color: #9299aa;
-  margin: 20px 0;
-  text-align: center;
-}
-
-.results {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.result {
-  padding: 18px;
-  background: #151927;
-  border: 1px solid #292f42;
-  border-radius: 10px;
-}
-
-.result a {
-  color: #8ca1ff;
-  font-size: 19px;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-.result a:hover {
-  text-decoration: underline;
-}
-
-.result p {
-  color: #aab3c9;
-  line-height: 1.5;
-  margin-bottom: 0;
+iframe {
+  width: 100%;
+  height: 650px;
+  background: white;
+  border: none;
+  border-radius: 8px;
 }
 
 footer {
   text-align: center;
   color: #606a80;
-  padding: 30px;
+  padding: 25px;
 }
 </style>
 </head>
 
 <body>
 
-<header>◈ Cole's Web Portal</header>
+<header>◈ Cole's Proxy</header>
 
 <main>
-  <h1>Web Search</h1>
-  <p class="subtitle">
-    Search and explore articles from Wikipedia.
-  </p>
+<h1>Web Browser</h1>
+<p>Enter a website address to get started.</p>
 
-  <form class="search-box" id="searchForm">
+<div class="browser">
+
+  <form class="address" id="addressForm">
     <input
-      id="searchInput"
-      type="search"
-      placeholder="What are you looking for?"
-      autocomplete="off"
+      id="addressInput"
+      type="text"
+      placeholder="Enter website address..."
+      autocomplete="url"
       required
     >
-    <button id="searchButton" type="submit">
-      Search
-    </button>
+
+    <button type="submit">Go</button>
   </form>
 
-  <div id="status"></div>
-  <div class="results" id="results"></div>
+  <iframe
+    id="browserFrame"
+    src="about:blank"
+    title="Browser window">
+  </iframe>
+
+</div>
 </main>
 
 <footer>Powered by Cloudflare</footer>
 
 <script>
-const form = document.getElementById("searchForm");
-const input = document.getElementById("searchInput");
-const results = document.getElementById("results");
-const status = document.getElementById("status");
-const button = document.getElementById("searchButton");
+const form = document.getElementById("addressForm");
+const input = document.getElementById("addressInput");
+const frame = document.getElementById("browserFrame");
 
-form.addEventListener("submit", async (event) => {
+form.addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const query = input.value.trim();
+  let address = input.value.trim();
 
-  if (!query) return;
+  if (!address) return;
 
-  results.replaceChildren();
-  status.textContent = "Searching...";
-  button.disabled = true;
+  if (!/^https?:\/\//i.test(address)) {
+    address = "https://" + address;
+  }
 
   try {
-    const params = new URLSearchParams({
-      action: "query",
-      list: "search",
-      srsearch: query,
-      format: "json",
-      origin: "*",
-      srlimit: "10"
-    });
+    const url = new URL(address);
 
-    const response = await fetch(
-      "https://en.wikipedia.org/w/api.php?" +
-      params.toString()
-    );
-
-    if (!response.ok) {
-      throw new Error("Search request failed: " + response.status);
-    }
-
-    const data = await response.json();
-    const pages = data.query.search;
-
-    if (pages.length === 0) {
-      status.textContent = "No results found.";
+    if (!url.hostname.includes(".")) {
+      alert("Please enter a valid website address.");
       return;
     }
 
-    status.textContent = pages.length + " results found.";
+    frame.src = url.href;
+    input.value = url.href;
 
-    pages.forEach((page) => {
-      const card = document.createElement("div");
-      card.className = "result";
-
-      const link = document.createElement("a");
-      link.textContent = page.title;
-      link.href =
-        "https://en.wikipedia.org/?curid=" + page.pageid;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-
-      const description = document.createElement("p");
-      const parser = new DOMParser();
-      const parsed = parser.parseFromString(
-        page.snippet,
-        "text/html"
-      );
-
-      description.textContent = parsed.body.textContent;
-
-      card.append(link, description);
-      results.appendChild(card);
-    });
-
-  } catch (error) {
-    status.textContent =
-      "Search failed. Check your internet connection and try again.";
-
-    console.error(error);
-
-  } finally {
-    button.disabled = false;
+  } catch {
+    alert("Invalid website address.");
   }
 });
 </script>
