@@ -1,9 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cole's Proxy</title>
+
 <style>
 * { box-sizing: border-box; }
 
@@ -46,12 +48,39 @@ p {
 }
 
 .address {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+input {
+  flex: 1;
+  min-width: 0;
   padding: 13px;
   background: #090b12;
   border: 1px solid #30384d;
   border-radius: 8px;
-  color: #aab3c9;
-  margin-bottom: 14px;
+  color: white;
+  font-size: 15px;
+  outline: none;
+}
+
+input:focus {
+  border-color: #657cff;
+}
+
+button {
+  padding: 0 22px;
+  background: #536dfe;
+  border: 0;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+button:hover {
+  background: #4059e8;
 }
 
 iframe {
@@ -69,6 +98,7 @@ footer {
 }
 </style>
 </head>
+
 <body>
 
 <header>◈ Web Portal</header>
@@ -78,18 +108,42 @@ footer {
 <p>A simple browser-style web experience.</p>
 
 <div class="browser">
-  <div class="address">
-    https://example.com
-  </div>
+
+  <form class="address" id="searchForm">
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search DuckDuckGo..."
+      autocomplete="off"
+      required
+    >
+    <button type="submit">Search</button>
+  </form>
 
   <iframe
-    src="https://round-heart-005b.crpytkid.workers.dev"
-    title="Demo webpage">
+    id="browserFrame"
+    src="https://example.com"
+    title="Webpage">
   </iframe>
+
 </div>
 </main>
 
 <footer>Powered by Cloudflare</footer>
+
+<script>
+document.getElementById("searchForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+
+  const query = document.getElementById("searchInput").value.trim();
+
+  if (!query) return;
+
+  const url = "https://duckduckgo.com/?q=" + encodeURIComponent(query);
+
+  document.getElementById("browserFrame").src = url;
+});
+</script>
 
 </body>
 </html>
