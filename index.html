@@ -7,7 +7,9 @@
 <title>Cole's Proxy</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
@@ -104,44 +106,48 @@ footer {
 <header>◈ Web Portal</header>
 
 <main>
-<h1>Your Web Portal</h1>
-<p>A simple browser-style web experience.</p>
+  <h1>Your Web Portal</h1>
+  <p>A simple browser-style web experience.</p>
 
-<div class="browser">
+  <div class="browser">
 
-  <form class="address" id="searchForm">
-    <input
-      id="searchInput"
-      type="text"
-      placeholder="Search DuckDuckGo..."
-      autocomplete="off"
-      required
-    >
-    <button type="submit">Search</button>
-  </form>
+    <form class="address" id="searchForm">
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search DuckDuckGo..."
+        autocomplete="off"
+        required
+      >
 
-  <iframe
-    id="browserFrame"
-    src="https://example.com"
-    title="Webpage">
-  </iframe>
+      <button type="submit">Search</button>
+    </form>
 
-</div>
+    <iframe
+      src="https://example.com"
+      title="Demo webpage">
+    </iframe>
+
+  </div>
 </main>
 
 <footer>Powered by Cloudflare</footer>
 
 <script>
-document.getElementById("searchForm").addEventListener("submit", function(event) {
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
+
+searchForm.addEventListener("submit", function(event) {
   event.preventDefault();
 
-  const query = document.getElementById("searchInput").value.trim();
+  const query = searchInput.value.trim();
 
   if (!query) return;
 
-  const url = "https://duckduckgo.com/?q=" + encodeURIComponent(query);
+  const url = "https://duckduckgo.com/?q=" +
+    encodeURIComponent(query);
 
-  document.getElementById("browserFrame").src = url;
+  window.open(url, "_blank");
 });
 </script>
 
