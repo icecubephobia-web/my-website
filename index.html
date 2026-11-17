@@ -1,50 +1,271 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fortnite Token Proxy</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Umbra – Browse unseen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    color: white;
-
+  :root {
+    --void: #0c0a13;
+    --shade: #15121f;
+    --veil: #231e33;
+    --mist: #a49db8;
+    --moon: #e9e4f5;
+    --glow: #8a6cff;
+    --ember: #d9a66b;
+    --serif: "Cormorant Garamond", "Iowan Old Style", Georgia, serif;
+    --sans: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  html { height: 100%; }
+  body {
+    min-height: 100%;
     background:
-        linear-gradient(rgba(0,0,0,0.15), rgba(0,0,0,0.3)),
-        url("https://i.postimg.cc/33Qdc9Rq/Screenshot-2026-11-17-155530.png") center center / cover no-repeat fixed;
-}
+      radial-gradient(ellipse 80% 50% at 50% 0%, #1b1530 0%, transparent 70%),
+      var(--void);
+    color: var(--moon);
+    font-family: var(--sans);
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    padding: env(safe-area-inset-top, 0) 0 env(safe-area-inset-bottom, 0);
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 6px; }
 
-main {
-    padding: 35px 45px;
-    text-align: center;
-    background: rgba(5, 10, 24, 0.6);
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 18px;
-    backdrop-filter: blur(5px);
-    box-shadow: 0 18px 60px rgba(0,0,0,0.35);
-}
+  header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem clamp(1.25rem, 5vw, 3.5rem);
+  }
+  .brand { font-family: var(--serif); font-size: 1.6rem; font-style: italic; letter-spacing: .02em; text-decoration: none; }
+  nav { display: flex; gap: 1.75rem; font-size: .9rem; color: var(--mist); }
+  nav a { text-decoration: none; transition: color .2s; }
+  nav a:hover { color: var(--moon); }
 
-h1 {
-    margin: 0;
-    font-size: clamp(32px, 6vw, 64px);
-    text-shadow: 0 3px 12px black;
-}
+  main { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 2rem 1.25rem 4rem; text-align: center; }
+
+  /* The one memorable thing: the eclipse */
+  .eclipse {
+    position: relative;
+    width: clamp(150px, 26vw, 230px);
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 50%, #000 0 62%, transparent 63%);
+    margin-bottom: 2.5rem;
+  }
+  .eclipse::before {
+    content: ""; position: absolute; inset: -4%;
+    border-radius: 50%;
+    background: conic-gradient(from 210deg, transparent 0 20%, var(--glow) 38%, var(--ember) 50%, var(--glow) 62%, transparent 80%);
+    -webkit-mask: radial-gradient(circle, transparent 0 60%, #000 62% 66%, transparent 74%);
+            mask: radial-gradient(circle, transparent 0 60%, #000 62% 66%, transparent 74%);
+    filter: blur(1.5px);
+    animation: breathe 7s ease-in-out infinite;
+  }
+  .eclipse::after {
+    content: ""; position: absolute; inset: -30%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(138,108,255,.28) 0 30%, transparent 62%);
+    z-index: -1;
+    animation: breathe 7s ease-in-out infinite;
+  }
+  @keyframes breathe { 0%,100% { opacity: .65; transform: scale(1); } 50% { opacity: 1; transform: scale(1.04); } }
+
+  h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6.5vw, 4.6rem);
+    line-height: 1.05;
+    letter-spacing: -.01em;
+    max-width: 15ch;
+  }
+  .lede { color: var(--mist); max-width: 44ch; margin-top: 1.25rem; font-size: 1.05rem; }
+
+  form {
+    width: min(100%, 640px);
+    margin-top: 2.5rem;
+    display: flex;
+    background: var(--shade);
+    border: 1px solid var(--veil);
+    border-radius: 999px;
+    padding: .4rem;
+    transition: border-color .25s, box-shadow .25s;
+  }
+  form:focus-within { border-color: var(--glow); box-shadow: 0 0 0 4px rgba(138,108,255,.16), 0 10px 60px rgba(138,108,255,.18); }
+  input[type="text"] {
+    flex: 1; min-width: 0;
+    background: transparent; border: 0; outline: 0;
+    color: var(--moon); font: inherit; font-size: 1rem;
+    padding: .8rem 1.25rem;
+  }
+  input::placeholder { color: #6d6783; }
+  button.go {
+    border: 0; cursor: pointer;
+    background: var(--moon); color: var(--void);
+    font: 600 .95rem var(--sans);
+    padding: .8rem 1.6rem; border-radius: 999px;
+    transition: background .2s, transform .1s;
+  }
+  button.go:hover { background: #fff; }
+  button.go:active { transform: scale(.97); }
+
+  .status { margin-top: 1rem; font-size: .88rem; color: var(--mist); min-height: 1.4em; }
+  .status.live { color: var(--ember); }
+
+  .options {
+    margin-top: 2.5rem;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem;
+  }
+  .opt {
+    display: flex; align-items: center; gap: .65rem;
+    background: transparent; color: var(--mist);
+    border: 1px solid var(--veil); border-radius: 999px;
+    padding: .55rem 1rem .55rem .7rem;
+    font: 500 .88rem var(--sans); cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .opt:hover { border-color: #3a3252; color: var(--moon); }
+  .opt .sw { width: 28px; height: 16px; border-radius: 99px; background: var(--veil); position: relative; transition: background .2s; }
+  .opt .sw::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; border-radius: 50%; background: var(--mist); transition: transform .2s, background .2s; }
+  .opt[aria-pressed="true"] { color: var(--moon); border-color: #3a3252; }
+  .opt[aria-pressed="true"] .sw { background: var(--glow); }
+  .opt[aria-pressed="true"] .sw::after { transform: translateX(12px); background: #fff; }
+
+  /* Route: a genuine sequence of hops */
+  .route {
+    margin-top: 4.5rem; width: min(100%, 640px);
+    display: grid; grid-template-columns: auto 1fr auto 1fr auto; align-items: center; gap: .75rem;
+    font-size: .85rem; color: var(--mist);
+  }
+  .node { display: flex; flex-direction: column; align-items: center; gap: .5rem; }
+  .node i { width: 12px; height: 12px; border-radius: 50%; border: 1.5px solid var(--mist); display: block; }
+  .node.mid i { border-color: var(--glow); box-shadow: 0 0 14px var(--glow); }
+  .line { height: 1px; background: linear-gradient(90deg, var(--veil), #4a4066, var(--veil)); margin-bottom: 1.6rem; }
+
+  .facts {
+    margin-top: 5rem; width: min(100%, 880px);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 2.5rem;
+    text-align: left;
+  }
+  .facts h2 { font-family: var(--serif); font-weight: 500; font-size: 1.45rem; margin-bottom: .4rem; }
+  .facts p { color: var(--mist); font-size: .95rem; }
+
+  footer {
+    padding: 1.75rem clamp(1.25rem, 5vw, 3.5rem);
+    border-top: 1px solid var(--veil);
+    display: flex; flex-wrap: wrap; gap: 1rem; justify-content: space-between;
+    font-size: .82rem; color: #6d6783;
+  }
+
+  @media (max-width: 560px) {
+    nav { gap: 1rem; }
+    form { flex-direction: column; border-radius: 22px; }
+    button.go { width: 100%; }
+    input[type="text"] { text-align: center; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eclipse::before, .eclipse::after { animation: none; }
+    * { transition: none !important; }
+  }
 </style>
 </head>
-
 <body>
-    <main>
-        <h1>fortnite token proxy</h1>
-    </main>
+
+<header>
+  <a class="brand" href="#">Umbra</a>
+  <nav>
+    <a href="#how">How it works</a>
+    <a href="#privacy">Privacy</a>
+    <a href="#help">Help</a>
+  </nav>
+</header>
+
+<main>
+  <div class="eclipse" aria-hidden="true"></div>
+
+  <h1>Browse where no one is looking</h1>
+  <p class="lede">Open any website through a hidden route. Your address stays behind the shade.</p>
+
+  <form id="proxy-form" autocomplete="off">
+    <label for="url" style="position:absolute;left:-9999px">Website address</label>
+    <input type="text" id="url" name="url" placeholder="Enter a website address" spellcheck="false" inputmode="url">
+    <button class="go" type="submit">Open page</button>
+  </form>
+  <p class="status" id="status" role="status">Route idle. Nothing is connected yet.</p>
+
+  <div class="options" role="group" aria-label="Privacy options">
+    <button type="button" class="opt" aria-pressed="true" data-opt="mask"><span class="sw"></span>Hide my IP address</button>
+    <button type="button" class="opt" aria-pressed="true" data-opt="trackers"><span class="sw"></span>Block trackers</button>
+    <button type="button" class="opt" aria-pressed="false" data-opt="scripts"><span class="sw"></span>Disable scripts</button>
+    <button type="button" class="opt" aria-pressed="true" data-opt="wipe"><span class="sw"></span>Clear cookies on exit</button>
+  </div>
+
+  <section class="route" id="how" aria-label="How your request travels">
+    <div class="node"><i></i>You</div>
+    <div class="line"></div>
+    <div class="node mid"><i></i>Umbra relay</div>
+    <div class="line"></div>
+    <div class="node"><i></i>The website</div>
+  </section>
+
+  <section class="facts" id="privacy">
+    <div>
+      <h2>No trail</h2>
+      <p>The site sees our relay, not your device. We keep no history of the pages you open.</p>
+    </div>
+    <div>
+      <h2>Quiet pages</h2>
+      <p>Trackers and fingerprinting scripts are removed before a page reaches you.</p>
+    </div>
+    <div>
+      <h2>Nothing to install</h2>
+      <p>Paste an address and go. It works in any modern browser.</p>
+    </div>
+  </section>
+</main>
+
+<footer id="help">
+  <span>© 2026 Umbra</span>
+  <span><a href="#">Terms</a> &nbsp; <a href="#">Privacy policy</a> &nbsp; <a href="#">Contact</a></span>
+</footer>
+
+<script>
+  // Front-end only. Hook the real proxy in at the TODO below.
+  const form = document.getElementById('proxy-form');
+  const input = document.getElementById('url');
+  const status = document.getElementById('status');
+
+  const options = { mask: true, trackers: true, scripts: false, wipe: true };
+
+  document.querySelectorAll('.opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const on = btn.getAttribute('aria-pressed') !== 'true';
+      btn.setAttribute('aria-pressed', String(on));
+      options[btn.dataset.opt] = on;
+    });
+  });
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    let value = input.value.trim();
+    if (!value) {
+      status.className = 'status';
+      status.textContent = 'Enter a website address to open.';
+      return;
+    }
+    if (!/^https?:\/\//i.test(value)) value = 'https://' + value;
+
+    status.className = 'status live';
+    status.textContent = 'Opening ' + value + ' through the relay…';
+
+    // TODO: send `value` and `options` to the proxy backend and load the response.
+    console.log('proxy request', { url: value, options });
+  });
+</script>
 </body>
 </html>
