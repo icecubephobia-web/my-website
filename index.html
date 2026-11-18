@@ -286,8 +286,21 @@ form.addEventListener('submit', async e => {
 
     const result = await response.text();
 
-    status.textContent = 'Relay connected. Response received!';
-    console.log(result);
+const frame = document.getElementById('proxy-frame');
+const viewer = document.getElementById('browser-view');
+
+const base = `<base href="${new URL(value).origin}/">`;
+
+const page = result.replace(/<base\b[^>]*>/i, '');
+
+frame.srcdoc = page.replace(
+  /<head([^>]*)>/i,
+  `<head$1>${base}`
+);
+
+viewer.style.display = 'block';
+
+status.textContent = 'Page loaded through Umbra!';
   } catch (error) {
     status.textContent = 'Connection failed: ' + error.message;
   }
