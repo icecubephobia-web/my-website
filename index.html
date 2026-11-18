@@ -197,7 +197,22 @@
     <button class="go" type="submit">Open page</button>
   </form>
   <p class="status" id="status" role="status">Route idle. Nothing is connected yet.</p>
-
+<div id="browser-view" style="
+  display:none;
+  width:min(100%, 1000px);
+  height:650px;
+  margin-top:30px;
+  border:1px solid #3a3252;
+  border-radius:16px;
+  overflow:hidden;
+">
+  <iframe
+    id="proxy-frame"
+    title="Umbra webpage viewer"
+    sandbox=""
+    style="width:100%;height:100%;border:0;background:white;"
+  ></iframe>
+</div>
   <div class="options" role="group" aria-label="Privacy options">
     <button type="button" class="opt" aria-pressed="true" data-opt="mask"><span class="sw"></span>Hide my IP address</button>
     <button type="button" class="opt" aria-pressed="true" data-opt="trackers"><span class="sw"></span>Block trackers</button>
