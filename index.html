@@ -1,21 +1,25 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hexium JEWS</title>
+
 <style>
   :root{
     --bg:#0e1116; --surface:#171c24; --line:#2a3240; --text:#e8ecf2; --muted:#8e99ab;
     --accent:#4fd1c5; --accent-ink:#06211e;
     color-scheme:dark;
   }
+
   @media (prefers-color-scheme: light){
     :root:not([data-theme="dark"]){
       --bg:#f3f5f8; --surface:#ffffff; --line:#d9dfe8; --text:#141a23; --muted:#5b667a;
       --accent:#0f8f84; --accent-ink:#ffffff; color-scheme:light;
     }
   }
+
   *{box-sizing:border-box;margin:0}
   html{scroll-behavior:smooth}
   body{background:var(--bg);color:var(--text);font:16px/1.6 "Segoe UI",system-ui,-apple-system,sans-serif}
@@ -40,10 +44,10 @@
   .btn{padding:13px 24px;border-radius:10px;font-weight:700;border:1px solid var(--line);background:var(--surface);cursor:pointer;font:inherit;font-weight:700;color:var(--text)}
   .btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
   .btn:hover{filter:brightness(1.1)}
-  .hero-img{aspect-ratio:1;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  .hero-img{aspect-ratio:1;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);overflow:hidden}
   @media(max-width:800px){.hero{grid-template-columns:1fr;padding-top:56px}.hero-img{max-width:360px}}
 
-  /* PLACEHOLDER IMAGE (replace the .ph div with <img src="your-photo.jpg" alt="..."> ) */
+  /* IMAGES */
   .ph{background:var(--surface);display:grid;place-items:center;color:var(--muted);font-size:14px;border:1px dashed var(--line);width:100%;height:100%}
   img{display:block;width:100%;height:100%;object-fit:cover}
 
@@ -71,9 +75,11 @@
 
   footer{border-top:1px solid var(--line);padding:32px 0;color:var(--muted);font-size:14px}
   footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+
   @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
 </head>
+
 <body>
 
 <nav>
@@ -88,29 +94,58 @@
 </nav>
 
 <main id="top">
+
   <div class="wrap hero">
     <div>
       <h1>Hexium JEWS</h1>
-      <p><!-- HERO DESCRIPTION: write your tagline here --> Your description goes here.</p>
+      <p>Your description goes here.</p>
       <div class="btns">
         <a class="btn primary" href="#gallery">Browse</a>
         <a class="btn" href="#contact">Get in touch</a>
       </div>
     </div>
-    <div class="hero-img"><div class="ph"><!-- <img src="hero.jpg" alt=""> -->Hero photo</div></div>
+
+    <!-- YOUR IMAGE -->
+    <div class="hero-img">
+      <img src="https://i.postimg.cc/3NkhvGRm/Screenshot-2026-11-20-172633.png" alt="Hexium">
+    </div>
   </div>
 
   <section id="gallery">
     <div class="wrap">
       <h2>Gallery</h2>
-      <p class="lead"><!-- SECTION DESCRIPTION --> Section description goes here.</p>
+      <p class="lead">Section description goes here.</p>
+
       <div class="grid">
-        <article class="card"><div class="thumb"><div class="ph">Photo 1</div></div><div class="body"><h3>Title 1</h3><p>Description 1</p></div></article>
-        <article class="card"><div class="thumb"><div class="ph">Photo 2</div></div><div class="body"><h3>Title 2</h3><p>Description 2</p></div></article>
-        <article class="card"><div class="thumb"><div class="ph">Photo 3</div></div><div class="body"><h3>Title 3</h3><p>Description 3</p></div></article>
-        <article class="card"><div class="thumb"><div class="ph">Photo 4</div></div><div class="body"><h3>Title 4</h3><p>Description 4</p></div></article>
-        <article class="card"><div class="thumb"><div class="ph">Photo 5</div></div><div class="body"><h3>Title 5</h3><p>Description 5</p></div></article>
-        <article class="card"><div class="thumb"><div class="ph">Photo 6</div></div><div class="body"><h3>Title 6</h3><p>Description 6</p></div></article>
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 1</div></div>
+          <div class="body"><h3>Title 1</h3><p>Description 1</p></div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 2</div></div>
+          <div class="body"><h3>Title 2</h3><p>Description 2</p></div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 3</div></div>
+          <div class="body"><h3>Title 3</h3><p>Description 3</p></div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 4</div></div>
+          <div class="body"><h3>Title 4</h3><p>Description 4</p></div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 5</div></div>
+          <div class="body"><h3>Title 5</h3><p>Description 5</p></div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"><div class="ph">Photo 6</div></div>
+          <div class="body"><h3>Title 6</h3><p>Description 6</p></div>
+        </article>
       </div>
     </div>
   </section>
@@ -119,9 +154,12 @@
     <div class="wrap about">
       <div>
         <h2>About</h2>
-        <p class="lead" style="margin-bottom:0"><!-- ABOUT TEXT --> About text goes here.</p>
+        <p class="lead" style="margin-bottom:0">About text goes here.</p>
       </div>
-      <div class="pic"><div class="ph">About photo</div></div>
+
+      <div class="pic">
+        <div class="ph">About photo</div>
+      </div>
     </div>
   </section>
 
@@ -129,6 +167,7 @@
     <div class="wrap">
       <h2>Contact</h2>
       <p class="lead">Contact description goes here.</p>
+
       <div class="contact">
         <input type="text" placeholder="Name" aria-label="Name">
         <input type="email" placeholder="Email" aria-label="Email">
@@ -137,6 +176,7 @@
       </div>
     </div>
   </section>
+
 </main>
 
 <footer>
